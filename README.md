@@ -60,45 +60,45 @@ The copilot uses **Clean / Hexagonal Architecture**: dependencies point *inward 
 
 ```mermaid
 graph LR
-    UI[Streamlit UI] -->|REST| API[FastAPI]
-    API --> ORCH[LangGraph Orchestrator]
-    ORCH --> AG[8 Specialist Agents]
-    AG --> RAG[RAG Engine]
-    AG --> LLM[(Ollama · local LLM)]
-    RAG --> VS[(ChromaDB)]
-    API --> DB[(SQLite / Postgres)]
+    UI["Streamlit UI"] -->|REST| API["FastAPI"]
+    API --> ORCH["LangGraph Orchestrator"]
+    ORCH --> AG["8 Specialist Agents"]
+    AG --> RAG["RAG Engine"]
+    AG --> LLM[("Ollama local LLM")]
+    RAG --> VS[("ChromaDB")]
+    API --> DB[("SQLite / Postgres")]
 ```
 
 ### Layers
 
 ```mermaid
 graph TD
-    subgraph P[Presentation]
-        A1[FastAPI routers]
-        A2[Streamlit UI]
+    subgraph P["Presentation"]
+        A1["FastAPI routers"]
+        A2["Streamlit UI"]
     end
-    subgraph AP[Application]
-        B1[Use cases]
-        B2[Agents + orchestrator]
+    subgraph AP["Application"]
+        B1["Use cases"]
+        B2["Agents and orchestrator"]
     end
-    subgraph D[Domain - pure, no deps]
-        C1[Entities · Value objects]
-        C2[Ports - interfaces]
+    subgraph D["Domain (pure, no deps)"]
+        C1["Entities and value objects"]
+        C2["Ports (interfaces)"]
     end
-    subgraph INF[Infrastructure]
-        E1[Ollama LLM adapter]
-        E2[ChromaDB vector store]
-        E3[SQLAlchemy repositories]
-        E4[Sentence-Transformers embedder]
+    subgraph INF["Infrastructure"]
+        E1["Ollama LLM adapter"]
+        E2["ChromaDB vector store"]
+        E3["SQLAlchemy repositories"]
+        E4["Sentence-Transformers embedder"]
     end
     A1 --> B1
     A2 --> A1
     B1 --> B2 --> C2
     B1 --> C1
-    E1 -.implements.-> C2
-    E2 -.implements.-> C2
-    E3 -.implements.-> C2
-    E4 -.implements.-> C2
+    E1 -. implements .-> C2
+    E2 -. implements .-> C2
+    E3 -. implements .-> C2
+    E4 -. implements .-> C2
 ```
 
 Full C4 diagrams, sequence diagrams, and the reasoning behind every choice live in **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**, with each significant decision captured as an **[ADR](docs/adr/)**.

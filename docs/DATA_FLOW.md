@@ -7,7 +7,7 @@ structure see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ```mermaid
 flowchart TD
-    A[User picks agent + prompt in UI] --> B[POST /agents/&#123;agent&#125;]
+    A["User picks agent + prompt in UI"] --> B["POST /agents/{agent}"]
     B --> C[RunAgentUseCase]
     C --> D[AgentOrchestrator - LangGraph]
     D --> E[Specialist agent]
