@@ -47,7 +47,7 @@ class ChromaVectorStore:
         distances = (result.get("distances") or [[]])[0]
 
         chunks: list[RetrievedChunk] = []
-        for text, meta, distance in zip(documents, metadatas, distances):
+        for text, meta, distance in zip(documents, metadatas, distances, strict=False):
             source = str((meta or {}).get("source", "unknown"))
             chunks.append(
                 RetrievedChunk(text=text, source=source, score=1.0 - float(distance))

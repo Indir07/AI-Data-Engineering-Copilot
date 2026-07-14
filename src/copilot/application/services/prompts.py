@@ -22,7 +22,7 @@ BASE_SYSTEM_PROMPT = (
 # Agent-specific prefixes appended to the base persona (used from Phase 6).
 AGENT_SYSTEM_PROMPTS: dict[AgentType, str] = {
     AgentType.SQL: "Focus on SQL: generate, explain, debug, optimize, and translate dialects.",
-    AgentType.PYSPARK: "Focus on PySpark: transformations, performance tuning, and error diagnosis.",
+    AgentType.PYSPARK: "Focus on PySpark: transformations, tuning, and error diagnosis.",
     AgentType.ETL: "Focus on ETL: Bronze/Silver/Gold, incremental loads, CDC, and SCD patterns.",
     AgentType.DATA_QUALITY: "Focus on data quality: Great Expectations/Soda suites and profiling.",
     AgentType.DOCUMENTATION: "Focus on clear technical documentation and diagrams.",

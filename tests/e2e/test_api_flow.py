@@ -96,10 +96,8 @@ def test_conversation_persistence_flow(client: TestClient) -> None:
 
 @pytest.mark.e2e
 def test_rag_flow(client: TestClient) -> None:
-    up = client.post(
-        "/upload",
-        files={"file": ("medallion.txt", b"the silver layer holds cleaned data " * 10, "text/plain")},
-    )
+    payload = b"the silver layer holds cleaned data " * 10
+    up = client.post("/upload", files={"file": ("medallion.txt", payload, "text/plain")})
     assert up.status_code == 200
     indexed = up.json()["chunks_indexed"]
     assert indexed > 0

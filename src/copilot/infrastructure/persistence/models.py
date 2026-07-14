@@ -21,7 +21,7 @@ class ConversationModel(Base):
     title: Mapped[str | None] = mapped_column(String(120), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
-    messages: Mapped[list["MessageModel"]] = relationship(
+    messages: Mapped[list[MessageModel]] = relationship(
         back_populates="conversation",
         cascade="all, delete-orphan",
         order_by="MessageModel.position",

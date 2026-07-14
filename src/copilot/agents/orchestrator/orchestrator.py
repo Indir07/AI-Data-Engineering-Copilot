@@ -11,12 +11,13 @@ stays testable independent of LangGraph.
 
 from __future__ import annotations
 
-from typing import TypedDict
+from typing import Any, TypedDict
 
 from langgraph.graph import END, StateGraph
 
 from copilot.agents.base.types import AgentRequest, AgentResult
 from copilot.agents.orchestrator.registry import AgentRegistry
+from copilot.domain.value_objects.enums import AgentType
 
 
 class _AgentState(TypedDict):
@@ -29,7 +30,7 @@ class AgentOrchestrator:
         self._registry = registry
         self._graph = self._build_graph()
 
-    def _build_graph(self):
+    def _build_graph(self) -> Any:
         graph = StateGraph(_AgentState)
         graph.add_node("dispatch", self._dispatch_node)
         graph.set_entry_point("dispatch")
@@ -47,5 +48,5 @@ class AgentOrchestrator:
         assert result is not None  # dispatch node always sets it
         return result
 
-    def available_agents(self):
+    def available_agents(self) -> list[AgentType]:
         return self._registry.available()
