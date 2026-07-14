@@ -1,0 +1,23 @@
+%% Multi-agent routing via LangGraph
+graph TD
+    Q[User request] --> R{Router - LangGraph}
+    R --> SQL[SQL Agent]
+    R --> SPARK[PySpark Agent]
+    R --> ETL[ETL Agent]
+    R --> DQ[Data Quality Agent]
+    R --> DOC[Documentation Agent]
+    R --> AIR[Airflow Agent]
+    R --> DBT[dbt Agent]
+    R --> RAGA[RAG Agent]
+
+    RAGA -->|context| SQL
+    RAGA -->|context| SPARK
+    RAGA -->|context| ETL
+
+    SQL --> OUT[Grounded, validated response]
+    SPARK --> OUT
+    ETL --> OUT
+    DQ --> OUT
+    DOC --> OUT
+    AIR --> OUT
+    DBT --> OUT

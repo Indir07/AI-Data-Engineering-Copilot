@@ -1,0 +1,23 @@
+%% RAG ingestion + retrieval sequence
+sequenceDiagram
+    actor U as User
+    participant API as FastAPI
+    participant ING as Ingestion
+    participant EMB as Embedder (ST)
+    participant VS as Chroma
+    participant AG as Agent
+    participant LLM as Ollama
+
+    U->>API: upload PDF/MD/CSV/TXT
+    API->>ING: parse + chunk
+    ING->>EMB: embed chunks
+    EMB->>VS: upsert vectors + metadata
+
+    U->>API: ask a question
+    API->>AG: task + query
+    AG->>EMB: embed query
+    EMB->>VS: similarity search (top-k)
+    VS-->>AG: relevant chunks + citations
+    AG->>LLM: system + context + query
+    LLM-->>AG: grounded answer
+    AG-->>U: answer + citations

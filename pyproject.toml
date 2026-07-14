@@ -1,0 +1,86 @@
+[project]
+name = "ai-data-engineering-copilot"
+version = "0.1.0"
+description = "An AI teammate that automates common data engineering tasks (SQL, PySpark, ETL, dbt, Airflow, data quality, docs) using local LLMs and RAG."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Indir" }]
+keywords = ["data-engineering", "llm", "rag", "langgraph", "pyspark", "dbt", "airflow", "agents"]
+
+# NOTE: dependencies are pinned per-layer in later phases via requirements/*.txt
+# and installed in the relevant Docker images. This section lists the top-level
+# runtime contract only; exact versions are locked in Phase 3+.
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic>=2",
+    "pydantic-settings",
+    "streamlit",
+    "langgraph",
+    "httpx",
+    "sqlalchemy>=2",
+    "duckdb",
+    "pandas",
+    "polars",
+    "chromadb",
+    "sentence-transformers",
+    "great-expectations",
+    "python-multipart",
+    "pypdf",
+    "structlog",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "black",
+    "ruff",
+    "mypy",
+    "pre-commit",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# ---------------------------------------------------------------------------
+# Tooling configuration (single source of truth)
+# ---------------------------------------------------------------------------
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "C4", "SIM", "TID"]
+ignore = ["E501"]  # line length handled by black
+
+[tool.ruff.lint.isort]
+known-first-party = ["copilot"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_unused_ignores = true
+disallow_untyped_defs = true
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra --strict-markers --cov=copilot --cov-report=term-missing"
+testpaths = ["tests"]
+markers = [
+    "unit: fast, isolated tests with all I/O mocked",
+    "integration: tests that touch real infra (db, vector store)",
+    "e2e: full-stack tests through the API",
+]

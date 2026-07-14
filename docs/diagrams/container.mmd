@@ -1,0 +1,34 @@
+%% C4 Level 2 — Container diagram
+%% Render: https://mermaid.live or the Mermaid CLI (mmdc)
+graph LR
+    subgraph client[Presentation]
+        UI[Streamlit UI :8501]
+    end
+    subgraph backend[Application / API]
+        API[FastAPI :8000]
+    end
+    subgraph core[Domain + Application]
+        ORCH[LangGraph Orchestrator]
+        AG[8 Specialist Agents]
+        RAG[RAG Engine]
+    end
+    subgraph infra[Infrastructure adapters]
+        LLM[LLM Provider - Ollama adapter]
+        VS[Vector Store - Chroma adapter]
+        DB[(SQLAlchemy: SQLite/Postgres)]
+        FS[File Storage]
+    end
+    OLL[(Ollama)]
+    CH[(ChromaDB)]
+
+    UI -->|HTTP/JSON| API
+    API --> ORCH
+    ORCH --> AG
+    AG --> RAG
+    AG --> LLM
+    RAG --> VS
+    RAG --> LLM
+    LLM --> OLL
+    VS --> CH
+    API --> DB
+    API --> FS
