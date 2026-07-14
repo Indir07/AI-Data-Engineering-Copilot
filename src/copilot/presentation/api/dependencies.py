@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from copilot.application.use_cases.chat import ChatUseCase
 from copilot.application.use_cases.converse import ConverseUseCase
+from copilot.application.use_cases.run_agent import RunAgentUseCase
 from copilot.config.container import get_container
 from copilot.domain.ports.repositories import ConversationRepository
 
@@ -23,3 +24,7 @@ def get_converse_use_case() -> ConverseUseCase:
 
 def get_conversation_repository() -> ConversationRepository:
     return get_container().conversation_repository()
+
+
+def get_run_agent_use_case() -> RunAgentUseCase:
+    return get_container().run_agent_use_case()
