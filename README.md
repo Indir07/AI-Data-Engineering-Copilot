@@ -17,10 +17,9 @@
 
 ---
 
-> ⚠️ **Project status: Phase 1 of 12 — architecture & scaffolding.**
-> The design is locked in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md); code
-> lands phase by phase (see [Roadmap](#-roadmap)). This README describes the
-> target system.
+> **Project status: Phases 1–8 done (RAG engine, Phase 5, is next).**
+> Backend, persistence, the 8-agent system, the Streamlit dashboard, and the
+> `docker compose` stack are in place. See the [Roadmap](#-roadmap).
 
 ## Why this project exists
 
@@ -98,8 +97,6 @@ deploy/              # docker/ · k8s/ · terraform/ (cloud-ready stubs)
 
 ## 🚀 Quickstart
 
-> Lands in **Phase 8**. The target experience:
-
 ```bash
 git clone https://github.com/Indir07/AI-Data-Engineering-Copilot.git
 cd AI-Data-Engineering-Copilot
@@ -113,13 +110,13 @@ make pull-models               # pull Qwen2.5-Coder + Llama 3.1 into Ollama
 ## 🗺️ Roadmap
 
 - [x] **Phase 1** — Architecture, folder structure, technology decisions
-- [ ] **Phase 2** — Repository initialization & tooling
-- [ ] **Phase 3** — Backend (FastAPI, config, DI, ports)
-- [ ] **Phase 4** — Database & persistence
+- [x] **Phase 2** — Repository initialization & tooling
+- [x] **Phase 3** — Backend (FastAPI, config, DI, ports)
+- [x] **Phase 4** — Database & persistence
 - [ ] **Phase 5** — RAG engine
-- [ ] **Phase 6** — Agents + orchestrator
-- [ ] **Phase 7** — Streamlit UI
-- [ ] **Phase 8** — Docker & Compose
+- [x] **Phase 6** — Agents + orchestrator
+- [x] **Phase 7** — Streamlit UI
+- [x] **Phase 8** — Docker & Compose
 - [ ] **Phase 9** — Testing
 - [ ] **Phase 10** — Deployment (cloud-ready)
 - [ ] **Phase 11** — CI/CD (GitHub Actions)
