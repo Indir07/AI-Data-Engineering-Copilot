@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# Runtime dependencies (pinned for reproducible builds & Docker layer caching).
+# pyproject.toml declares the loose contract; this file locks exact versions.
+# Grouped by concern so it is obvious *why* each dependency is here.
+# ---------------------------------------------------------------------------
+
+# --- Web / API ---
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9
+
+# --- Validation / config ---
+pydantic==2.7.4
+pydantic-settings==2.3.4
+
+# --- UI ---
+streamlit==1.36.0
+
+# --- Agents / orchestration ---
+langgraph==0.1.5
+
+# --- HTTP client (LLM/Ollama adapter) ---
+httpx==0.27.0
+
+# --- Persistence ---
+SQLAlchemy==2.0.31
+alembic==1.13.2
+# Postgres driver for compose/cloud (SQLite needs no driver locally)
+psycopg[binary]==3.2.1
+
+# --- Analytical / data ---
+duckdb==1.0.0
+pandas==2.2.2
+polars==1.1.0
+
+# --- RAG ---
+chromadb==0.5.3
+sentence-transformers==3.0.1
+pypdf==4.2.0
+
+# --- Data quality ---
+great-expectations==0.18.16
+
+# --- Observability ---
+structlog==24.2.0

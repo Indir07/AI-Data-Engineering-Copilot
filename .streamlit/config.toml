@@ -1,0 +1,13 @@
+# Dark theme for the copilot dashboard.
+[theme]
+base = "dark"
+primaryColor = "#7C3AED"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#1B2029"
+textColor = "#E6E6E6"
+font = "sans serif"
+
+[server]
+headless = true
+address = "0.0.0.0"
+port = 8501

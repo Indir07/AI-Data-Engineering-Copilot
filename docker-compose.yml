@@ -1,0 +1,88 @@
+# ---------------------------------------------------------------------------
+# One command to run the whole stack:  docker compose up --build
+# Services: ollama (LLM runtime), postgres (metadata/history), api (FastAPI),
+# ui (Streamlit). All free & local. Models/data persist in named volumes.
+# ---------------------------------------------------------------------------
+name: ai-data-engineering-copilot
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: copilot
+      POSTGRES_PASSWORD: copilot
+      POSTGRES_DB: copilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U copilot -d copilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      APP_ENV: dev
+      DATABASE_URL: postgresql+psycopg://copilot:copilot@postgres:5432/copilot
+      OLLAMA_BASE_URL: http://ollama:11434
+      LLM_MODEL: qwen2.5-coder:7b-instruct
+      CHROMA_PERSIST_DIR: /app/data/chroma
+      UPLOAD_DIR: /app/data/uploads
+      RUN_MIGRATIONS: "1"
+    command:
+      ["uvicorn", "copilot.presentation.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - appdata:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      API_BASE_URL: http://api:8000
+    command:
+      ["streamlit", "run", "src/copilot/presentation/ui/app.py",
+       "--server.address=0.0.0.0", "--server.port=8501"]
+    ports:
+      - "8501:8501"
+    depends_on:
+      api:
+        condition: service_started
+    restart: unless-stopped
+
+volumes:
+  ollama:
+  pgdata:
+  appdata:
