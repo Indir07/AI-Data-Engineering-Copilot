@@ -17,9 +17,9 @@
 
 ---
 
-> **Project status: Phases 1–8 done (RAG engine, Phase 5, is next).**
-> Backend, persistence, the 8-agent system, the Streamlit dashboard, and the
-> `docker compose` stack are in place. See the [Roadmap](#-roadmap).
+> **Project status: Phases 1–8 complete.** Backend, persistence, RAG engine,
+> the 8-agent system, the Streamlit dashboard, and the `docker compose` stack
+> are in place. Next: testing (9), cloud deploy (10), CI (11), docs (12).
 
 ## Why this project exists
 
@@ -113,7 +113,7 @@ make pull-models               # pull Qwen2.5-Coder + Llama 3.1 into Ollama
 - [x] **Phase 2** — Repository initialization & tooling
 - [x] **Phase 3** — Backend (FastAPI, config, DI, ports)
 - [x] **Phase 4** — Database & persistence
-- [ ] **Phase 5** — RAG engine
+- [x] **Phase 5** — RAG engine
 - [x] **Phase 6** — Agents + orchestrator
 - [x] **Phase 7** — Streamlit UI
 - [x] **Phase 8** — Docker & Compose

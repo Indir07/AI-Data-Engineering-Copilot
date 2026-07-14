@@ -13,7 +13,7 @@ from fastapi import FastAPI
 from copilot import __version__
 from copilot.config import configure_logging, get_settings
 from copilot.presentation.api.errors import register_exception_handlers
-from copilot.presentation.api.routers import agents, chat, conversations, health
+from copilot.presentation.api.routers import agents, chat, conversations, health, rag
 
 
 def create_app() -> FastAPI:
@@ -37,6 +37,7 @@ def create_app() -> FastAPI:
     app.include_router(chat.router)
     app.include_router(conversations.router)
     app.include_router(agents.router)
+    app.include_router(rag.router)
 
     @app.get("/", tags=["system"], summary="Service banner")
     def root() -> dict[str, str]:
