@@ -1,0 +1,41 @@
+# Illustrative Ollama runtime. For real throughput schedule on a GPU node pool,
+# or swap the LLM for a managed OpenAI-compatible endpoint behind LLMPort.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ollama
+  namespace: copilot
+spec:
+  serviceName: ollama
+  replicas: 1
+  selector:
+    matchLabels: { app: copilot, component: ollama }
+  template:
+    metadata:
+      labels: { app: copilot, component: ollama }
+    spec:
+      containers:
+        - name: ollama
+          image: ollama/ollama:latest
+          ports:
+            - containerPort: 11434
+          volumeMounts:
+            - { name: models, mountPath: /root/.ollama }
+          resources:
+            requests: { cpu: "1", memory: "6Gi" }
+            limits: { cpu: "4", memory: "10Gi" }
+  volumeClaimTemplates:
+    - metadata: { name: models }
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources: { requests: { storage: 20Gi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama
+  namespace: copilot
+spec:
+  selector: { app: copilot, component: ollama }
+  ports:
+    - { port: 11434, targetPort: 11434 }

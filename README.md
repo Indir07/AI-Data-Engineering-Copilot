@@ -18,9 +18,10 @@
 
 ---
 
-> **Project status: Phases 1–8 complete.** Backend, persistence, RAG engine,
-> the 8-agent system, the Streamlit dashboard, and the `docker compose` stack
-> are in place. Next: testing (9), cloud deploy (10), CI (11), docs (12).
+> **Project status: all 12 phases complete.** A production-shaped, fully local
+> AI data-engineering copilot: clean-architecture backend, persistence, RAG,
+> an 8-agent LangGraph system, a Streamlit dashboard, one-command Docker, a
+> test pyramid, CI, and cloud-ready manifests.
 
 ## Why this project exists
 
@@ -119,9 +120,18 @@ make pull-models               # pull Qwen2.5-Coder + Llama 3.1 into Ollama
 - [x] **Phase 7** — Streamlit UI
 - [x] **Phase 8** — Docker & Compose
 - [x] **Phase 9** — Testing
-- [ ] **Phase 10** — Deployment (cloud-ready)
+- [x] **Phase 10** — Deployment (cloud-ready)
 - [x] **Phase 11** — CI/CD (GitHub Actions)
-- [ ] **Phase 12** — Documentation polish
+- [x] **Phase 12** — Documentation polish
+
+## 📚 Documentation
+
+- [Architecture](docs/ARCHITECTURE.md) — C4 diagrams, layers, rationale
+- [Architecture Decision Records](docs/adr/) — the *why* behind each choice
+- [API Reference](docs/API.md) — every endpoint with curl examples
+- [Data Flow](docs/DATA_FLOW.md) — request, ingestion, persistence journeys
+- [Developer Guide](docs/DEVELOPER_GUIDE.md) · [Testing](docs/TESTING.md) · [Deployment](docs/DEPLOYMENT.md) · [Contributing](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 
 ## 📄 License
 

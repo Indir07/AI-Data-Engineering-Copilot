@@ -1,0 +1,12 @@
+# kubectl apply -k deploy/k8s   (illustrative — review before applying)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: copilot
+resources:
+  - namespace.yaml
+  - config.yaml
+  - postgres.yaml
+  - ollama.yaml
+  - api-deployment.yaml
+  - ui-deployment.yaml
+  - ingress.yaml

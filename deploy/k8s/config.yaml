@@ -1,0 +1,25 @@
+# Non-secret application configuration. Secrets (DATABASE_URL) live in a Secret.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: copilot-config
+  namespace: copilot
+data:
+  APP_ENV: "prod"
+  LOG_LEVEL: "INFO"
+  OLLAMA_BASE_URL: "http://ollama:11434"
+  LLM_MODEL: "qwen2.5-coder:7b-instruct"
+  EMBEDDING_MODEL: "BAAI/bge-small-en-v1.5"
+  CHROMA_PERSIST_DIR: "/app/data/chroma"
+  UPLOAD_DIR: "/app/data/uploads"
+---
+# EXAMPLE secret — do NOT commit real values. Create with `kubectl create secret`.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: copilot-secrets
+  namespace: copilot
+type: Opaque
+stringData:
+  # In real clusters point this at managed Postgres (RDS/Cloud SQL/Azure DB).
+  database-url: "postgresql+psycopg://copilot:copilot@postgres:5432/copilot"
