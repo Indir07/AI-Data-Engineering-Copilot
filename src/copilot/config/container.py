@@ -35,6 +35,7 @@ from copilot.infrastructure.persistence.database import (
 from copilot.infrastructure.persistence.repositories import SqlAlchemyConversationRepository
 
 if TYPE_CHECKING:
+    from copilot.agents.orchestrator.orchestrator import AgentOrchestrator
     from copilot.application.use_cases.run_agent import RunAgentUseCase
 
 
@@ -49,7 +50,7 @@ class Container:
         self._embedder: EmbedderPort | None = None
         self._vector_store: VectorStorePort | None = None
         self._retriever: RetrieverPort | None = None
-        self._orchestrator: object | None = None
+        self._orchestrator: AgentOrchestrator | None = None
 
     # --- LLM ---
     @property

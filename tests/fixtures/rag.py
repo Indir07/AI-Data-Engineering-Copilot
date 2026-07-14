@@ -28,8 +28,7 @@ class FakeVectorStore:
 
     def query(self, embedding: list[float], *, top_k: int = 5) -> list[RetrievedChunk]:
         return [
-            RetrievedChunk(text=c.text, source=c.source, score=1.0)
-            for c in self._chunks[:top_k]
+            RetrievedChunk(text=c.text, source=c.source, score=1.0) for c in self._chunks[:top_k]
         ]
 
     def count(self) -> int:
