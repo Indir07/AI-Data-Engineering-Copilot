@@ -11,5 +11,6 @@ add a new file; changed decisions supersede an old one (never edit history).
 | [0004](0004-chromadb-vector-store.md) | ChromaDB + Sentence-Transformers for RAG |
 | [0005](0005-model-agnostic-llm-provider.md) | Model-agnostic provider, default Qwen2.5-Coder 7B |
 | [0006](0006-deployment-compose-cloud-ready.md) | Compose now, cloud-ready structure |
+| [0007](0007-persistence-sqlalchemy-repository.md) | Persistence via SQLAlchemy + Repository + Alembic |
 
 Use [`0000-template.md`](0000-template.md) for new records.

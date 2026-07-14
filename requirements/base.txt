@@ -24,6 +24,9 @@ httpx==0.27.0
 
 # --- Persistence ---
 SQLAlchemy==2.0.31
+alembic==1.13.2
+# Postgres driver for compose/cloud (SQLite needs no driver locally)
+psycopg[binary]==3.2.1
 
 # --- Analytical / data ---
 duckdb==1.0.0

@@ -1,22 +1,29 @@
 """Composition root (Dependency Injection container).
 
-This is the *only* module that knows which concrete adapters implement which
-ports. Everything else depends on abstractions. Wiring lives in one place so the
-dependency graph is explicit and swapping an implementation (e.g. a fake LLM in
-tests, pgvector later) is a one-line change here.
-
+The only module that knows which concrete adapters implement which ports.
 Adapters are built lazily and cached: importing the container is cheap, and we
-don't open an HTTP client until something actually needs the LLM.
+open no HTTP client or database engine until something actually needs it.
 """
 
 from __future__ import annotations
 
 from functools import lru_cache
 
+from sqlalchemy import Engine
+from sqlalchemy.orm import Session, sessionmaker
+
 from copilot.application.use_cases.chat import ChatUseCase
+from copilot.application.use_cases.converse import ConverseUseCase
 from copilot.config.settings import Settings, get_settings
 from copilot.domain.ports.llm import LLMPort
+from copilot.domain.ports.repositories import ConversationRepository
 from copilot.infrastructure.llm.factory import create_llm
+from copilot.infrastructure.persistence.database import (
+    create_db_engine,
+    create_session_factory,
+    init_db,
+)
+from copilot.infrastructure.persistence.repositories import SqlAlchemyConversationRepository
 
 
 class Container:
@@ -25,6 +32,8 @@ class Container:
     def __init__(self, settings: Settings | None = None) -> None:
         self.settings = settings or get_settings()
         self._llm: LLMPort | None = None
+        self._engine: Engine | None = None
+        self._session_factory: sessionmaker[Session] | None = None
 
     # --- infrastructure singletons ---
     @property
@@ -33,9 +42,29 @@ class Container:
             self._llm = create_llm(self.settings)
         return self._llm
 
+    @property
+    def engine(self) -> Engine:
+        if self._engine is None:
+            self._engine = create_db_engine(self.settings)
+            # Local convenience: ensure tables exist. Alembic owns prod schema.
+            init_db(self._engine)
+        return self._engine
+
+    @property
+    def session_factory(self) -> sessionmaker[Session]:
+        if self._session_factory is None:
+            self._session_factory = create_session_factory(self.engine)
+        return self._session_factory
+
+    def conversation_repository(self) -> ConversationRepository:
+        return SqlAlchemyConversationRepository(self.session_factory)
+
     # --- use case factories ---
     def chat_use_case(self) -> ChatUseCase:
         return ChatUseCase(self.llm)
+
+    def converse_use_case(self) -> ConverseUseCase:
+        return ConverseUseCase(self.llm, self.conversation_repository())
 
 
 @lru_cache
