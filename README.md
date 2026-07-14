@@ -6,6 +6,7 @@
 
 *Runs 100% locally and free (Ollama + ChromaDB). One command: `docker compose up`.*
 
+[![CI](https://github.com/Indir07/AI-Data-Engineering-Copilot/actions/workflows/ci.yml/badge.svg)](https://github.com/Indir07/AI-Data-Engineering-Copilot/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11+-blue)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/API-FastAPI-009688)](https://fastapi.tiangolo.com/)
 [![LangGraph](https://img.shields.io/badge/agents-LangGraph-1C3C3C)](https://langchain-ai.github.io/langgraph/)
@@ -117,9 +118,9 @@ make pull-models               # pull Qwen2.5-Coder + Llama 3.1 into Ollama
 - [x] **Phase 6** — Agents + orchestrator
 - [x] **Phase 7** — Streamlit UI
 - [x] **Phase 8** — Docker & Compose
-- [ ] **Phase 9** — Testing
+- [x] **Phase 9** — Testing
 - [ ] **Phase 10** — Deployment (cloud-ready)
-- [ ] **Phase 11** — CI/CD (GitHub Actions)
+- [x] **Phase 11** — CI/CD (GitHub Actions)
 - [ ] **Phase 12** — Documentation polish
 
 ## 📄 License
