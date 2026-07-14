@@ -64,3 +64,6 @@ _t2
 
 # Docker
 *.log
+
+# Local Claude settings
+.claude/
