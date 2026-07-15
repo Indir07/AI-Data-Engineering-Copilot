@@ -2,7 +2,7 @@
 
 # 🧠 AI Data Engineering Copilot
 
-**An AI teammate that automates the everyday work of a data engineer** — generating and optimizing SQL & PySpark, scaffolding ETL / Medallion pipelines, dbt models, Airflow DAGs, and data-quality suites, writing documentation, and answering questions grounded in **your own documents** via Retrieval-Augmented Generation.
+**An AI teammate that automates the everyday work of a data engineer** generating and optimizing SQL & PySpark, scaffolding ETL / Medallion pipelines, dbt models, Airflow DAGs, and data-quality suites, writing documentation, and answering questions grounded in **your own documents** via Retrieval-Augmented Generation.
 
 *Runs 100% locally and free — Ollama + ChromaDB, no paid APIs. One command: `docker compose up`.*
 
@@ -25,7 +25,7 @@
 
 Data engineers spend hours on repetitive, pattern-heavy work: writing boilerplate SQL, translating between dialects, tuning Spark jobs, wiring Bronze → Silver → Gold layers, authoring dbt models and Airflow DAGs, and documenting all of it. **AI Data Engineering Copilot** turns those chores into *task-shaped* requests answered by a team of specialist agents — not a generic chatbot, but a colleague that speaks data engineering.
 
-Just as importantly, it is **deliberately engineered like production software** — Clean/Hexagonal architecture, ports & adapters, a full test pyramid, CI/CD, and containerization — so it doubles as a **portfolio-grade demonstration** of modern Data + AI Engineering.
+Just as importantly, it is **deliberately engineered like production software**  Clean/Hexagonal architecture, ports & adapters, a full test pyramid, CI/CD, and containerization — so it doubles as a **portfolio-grade demonstration** of modern Data + AI Engineering.
 
 > **Project status:** ✅ All 12 build phases complete · CI green (lint · type-check · tests) · fully local & free to run.
 
