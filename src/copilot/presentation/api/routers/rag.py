@@ -50,9 +50,7 @@ def search(
     chunks = use_case.execute(request.query, top_k=request.top_k)
     return SearchResponse(
         query=request.query,
-        results=[
-            RetrievedChunkSchema(text=c.text, source=c.source, score=c.score) for c in chunks
-        ],
+        results=[RetrievedChunkSchema(text=c.text, source=c.source, score=c.score) for c in chunks],
     )
 
 

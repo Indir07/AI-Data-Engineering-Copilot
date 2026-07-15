@@ -24,6 +24,6 @@ class RagAgent(BaseAgent):
         if not chunks:
             return (
                 "No indexed documents matched the question. Tell the user no "
-                f"relevant context was found, then answer cautiously.\n\nQuestion:\n{request.prompt}"
+                f"relevant context found; answer cautiously.\n\nQuestion:\n{request.prompt}"
             )
         return super().build_user_prompt(request, chunks)

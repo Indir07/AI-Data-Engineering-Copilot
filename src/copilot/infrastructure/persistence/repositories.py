@@ -64,8 +64,6 @@ class SqlAlchemyConversationRepository:
     def list(self, limit: int = 50) -> list[Conversation]:
         with session_scope(self._session_factory) as session:
             stmt = (
-                select(ConversationModel)
-                .order_by(ConversationModel.created_at.desc())
-                .limit(limit)
+                select(ConversationModel).order_by(ConversationModel.created_at.desc()).limit(limit)
             )
             return [self._to_domain(m) for m in session.execute(stmt).scalars().all()]

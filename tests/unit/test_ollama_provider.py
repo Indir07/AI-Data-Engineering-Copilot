@@ -43,9 +43,7 @@ def test_happy_path_parses_content_and_tokens() -> None:
 
 @pytest.mark.unit
 def test_http_500_maps_to_llm_error() -> None:
-    provider = _provider_with(
-        httpx.MockTransport(lambda req: httpx.Response(500, text="boom"))
-    )
+    provider = _provider_with(httpx.MockTransport(lambda req: httpx.Response(500, text="boom")))
     with pytest.raises(LLMError):
         provider.complete([Message(Role.USER, "hi")])
 

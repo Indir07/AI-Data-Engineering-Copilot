@@ -1,0 +1,37 @@
+# Illustrative Streamlit UI deployment.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: copilot-ui
+  namespace: copilot
+  labels: { app: copilot, component: ui }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: copilot, component: ui }
+  template:
+    metadata:
+      labels: { app: copilot, component: ui }
+    spec:
+      containers:
+        - name: ui
+          image: ghcr.io/indir07/ai-data-engineering-copilot:latest
+          command: ["streamlit", "run", "src/copilot/presentation/ui/app.py",
+                    "--server.address=0.0.0.0", "--server.port=8501"]
+          ports:
+            - containerPort: 8501
+          env:
+            - { name: API_BASE_URL, value: "http://copilot-api" }
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: copilot-ui
+  namespace: copilot
+spec:
+  selector: { app: copilot, component: ui }
+  ports:
+    - { port: 80, targetPort: 8501 }

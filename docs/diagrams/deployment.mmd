@@ -1,0 +1,15 @@
+%% Deployment topology (docker compose)
+graph LR
+    subgraph compose[docker compose up]
+        ui[ui :8501]
+        api[api :8000]
+        oll[ollama :11434]
+        pg[(postgres :5432)]
+    end
+    ui --> api
+    api --> oll
+    api --> pg
+    vol[(named volumes:\n ollama models,\n appdata: chroma+uploads,\n pgdata)]
+    oll --- vol
+    api --- vol
+    pg --- vol

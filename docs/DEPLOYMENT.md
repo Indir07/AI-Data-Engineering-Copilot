@@ -58,3 +58,26 @@ The same images target a cluster. `deploy/k8s/` and `deploy/terraform/` hold
 Deployment/Service per component, a managed Postgres, and persistent volumes for
 models and the vector store. They are a starting point, not a turnkey deploy
 (ADR-0006).
+
+## Kubernetes (illustrative)
+
+`deploy/k8s/` contains reviewable manifests (namespace, config/secret, Postgres,
+Ollama, api + ui Deployments, HPA, Ingress) wired together by a kustomization:
+
+```bash
+# Review first — these are a starting point, not turnkey.
+kubectl apply -k deploy/k8s
+kubectl -n copilot get pods
+```
+
+The API runs migrations on start (`RUN_MIGRATIONS=1`) and its readiness/liveness
+probes hit `/health`. For production: use managed Postgres (drop `postgres.yaml`,
+keep the connection string in `copilot-secrets`), put durable storage behind the
+`/app/data` volume, and schedule Ollama on a GPU node — or swap it for a managed
+OpenAI-compatible endpoint behind `LLMPort` with no app changes.
+
+## Continuous delivery
+
+`.github/workflows/docker-publish.yml` builds the image and pushes it to GHCR on
+version tags (`vX.Y.Z`) and manual dispatch, so a tag produces a deployable
+`ghcr.io/<owner>/ai-data-engineering-copilot` image referenced by the manifests.

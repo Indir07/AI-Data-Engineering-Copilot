@@ -9,14 +9,14 @@ port.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from copilot.domain.value_objects.message import Message, Role
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 @dataclass
@@ -33,7 +33,7 @@ class Conversation:
         self.messages.append(message)
         return message
 
-    def with_system_prompt(self, prompt: str) -> "Conversation":
+    def with_system_prompt(self, prompt: str) -> Conversation:
         """Return the conversation guaranteed to start with a system prompt."""
         if not self.messages or self.messages[0].role is not Role.SYSTEM:
             self.messages.insert(0, Message(role=Role.SYSTEM, content=prompt))

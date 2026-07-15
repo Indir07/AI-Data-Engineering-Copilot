@@ -1,0 +1,23 @@
+%% C4 Level 1 — System context
+graph TB
+    user([Data Engineer / Analyst])
+    subgraph copilot[AI Data Engineering Copilot]
+        ui[Streamlit UI]
+        api[FastAPI Backend]
+        agents[Multi-Agent Core]
+        rag[RAG Engine]
+    end
+    ollama[(Ollama - local LLM)]
+    chroma[(ChromaDB - vectors)]
+    store[(SQLite / Postgres)]
+    duck[(DuckDB - analytics)]
+
+    user -->|tasks, uploads docs| ui
+    ui -->|REST| api
+    api --> agents
+    agents --> rag
+    agents -->|prompts| ollama
+    rag -->|search| chroma
+    rag -->|embeddings| ollama
+    api --> store
+    agents -->|profile / run SQL| duck

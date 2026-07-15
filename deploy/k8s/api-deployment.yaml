@@ -1,8 +1,9 @@
-# STUB — illustrative only (see deploy/k8s/README.md).
+# Illustrative FastAPI deployment (see deploy/k8s/README.md).
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: copilot-api
+  namespace: copilot
   labels: { app: copilot, component: api }
 spec:
   replicas: 2
@@ -18,30 +19,55 @@ spec:
           command: ["uvicorn", "copilot.presentation.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
           ports:
             - containerPort: 8000
+          envFrom:
+            - configMapRef: { name: copilot-config }
           env:
-            - name: APP_ENV
-              value: "prod"
             - name: RUN_MIGRATIONS
               value: "1"
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef: { name: copilot-secrets, key: database-url }
-            - name: OLLAMA_BASE_URL
-              value: "http://ollama:11434"
           readinessProbe:
             httpGet: { path: /health, port: 8000 }
             initialDelaySeconds: 10
             periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /health, port: 8000 }
+            initialDelaySeconds: 20
+            periodSeconds: 20
           resources:
             requests: { cpu: "250m", memory: "512Mi" }
             limits: { cpu: "1", memory: "1Gi" }
+          volumeMounts:
+            - { name: data, mountPath: /app/data }
+      volumes:
+        - name: data
+          emptyDir: {}   # replace with a PVC for durable chroma/uploads
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: copilot-api
+  namespace: copilot
 spec:
   selector: { app: copilot, component: api }
   ports:
-    - port: 80
-      targetPort: 8000
+    - { port: 80, targetPort: 8000 }
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: copilot-api
+  namespace: copilot
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: copilot-api
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target: { type: Utilization, averageUtilization: 70 }

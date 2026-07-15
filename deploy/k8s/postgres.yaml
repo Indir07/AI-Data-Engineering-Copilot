@@ -1,0 +1,42 @@
+# Illustrative in-cluster Postgres. In production prefer a managed database and
+# delete this file, keeping only the connection string in copilot-secrets.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: copilot
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels: { app: copilot, component: postgres }
+  template:
+    metadata:
+      labels: { app: copilot, component: postgres }
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          env:
+            - { name: POSTGRES_USER, value: copilot }
+            - { name: POSTGRES_PASSWORD, value: copilot }
+            - { name: POSTGRES_DB, value: copilot }
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - { name: data, mountPath: /var/lib/postgresql/data }
+  volumeClaimTemplates:
+    - metadata: { name: data }
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources: { requests: { storage: 5Gi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: copilot
+spec:
+  selector: { app: copilot, component: postgres }
+  ports:
+    - { port: 5432, targetPort: 5432 }

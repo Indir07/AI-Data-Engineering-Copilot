@@ -38,6 +38,4 @@ class IngestDocumentUseCase:
         embeddings = self._embedder.embed_documents([c.text for c in chunks])
         self._vector_store.add(chunks, embeddings)
 
-        return IngestResult(
-            document_id=str(uuid4()), source=filename, chunks_indexed=len(chunks)
-        )
+        return IngestResult(document_id=str(uuid4()), source=filename, chunks_indexed=len(chunks))

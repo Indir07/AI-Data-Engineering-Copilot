@@ -18,7 +18,7 @@ class RetrievedChunk:
     source: str
     score: float
 
-    def as_citation(self) -> "Citation":
+    def as_citation(self) -> Citation:
         snippet = self.text.strip().replace("\n", " ")
         return Citation(source=self.source, snippet=snippet[:200])
 

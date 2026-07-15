@@ -54,11 +54,22 @@ def _sidebar() -> dict:
         if agent == "sql":
             dialect = st.selectbox(
                 "SQL dialect",
-                ["ansi", "postgres", "snowflake", "bigquery", "databricks", "duckdb", "sqlite", "spark"],
+                [
+                    "ansi",
+                    "postgres",
+                    "snowflake",
+                    "bigquery",
+                    "databricks",
+                    "duckdb",
+                    "sqlite",
+                    "spark",
+                ],
             )
 
         with st.expander("Options"):
-            model = st.text_input("Model override", value="", placeholder="e.g. llama3.1:8b-instruct")
+            model = st.text_input(
+                "Model override", value="", placeholder="e.g. llama3.1:8b-instruct"
+            )
             temperature = st.slider("Temperature", 0.0, 1.0, 0.1, 0.05)
             use_rag = st.checkbox("Ground with uploaded docs (RAG)", value=(agent == "rag"))
 
@@ -66,7 +77,9 @@ def _sidebar() -> dict:
         st.subheader("Documents")
         uploaded = st.file_uploader("Upload PDF / MD / CSV / TXT", type=["pdf", "md", "csv", "txt"])
         if uploaded is not None and st.button("Index document", use_container_width=True):
-            res = api_client.upload_document(uploaded.name, uploaded.getvalue(), uploaded.type or "text/plain")
+            res = api_client.upload_document(
+                uploaded.name, uploaded.getvalue(), uploaded.type or "text/plain"
+            )
             if res.get("available"):
                 st.success(f"Indexed {uploaded.name}")
             else:

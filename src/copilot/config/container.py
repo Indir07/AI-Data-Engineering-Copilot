@@ -10,6 +10,7 @@ chromadb, langgraph) are imported inside the builder methods for the same reason
 from __future__ import annotations
 
 from functools import lru_cache
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -33,6 +34,10 @@ from copilot.infrastructure.persistence.database import (
 )
 from copilot.infrastructure.persistence.repositories import SqlAlchemyConversationRepository
 
+if TYPE_CHECKING:
+    from copilot.agents.orchestrator.orchestrator import AgentOrchestrator
+    from copilot.application.use_cases.run_agent import RunAgentUseCase
+
 
 class Container:
     """Builds and holds application singletons from a ``Settings`` instance."""
@@ -45,7 +50,7 @@ class Container:
         self._embedder: EmbedderPort | None = None
         self._vector_store: VectorStorePort | None = None
         self._retriever: RetrieverPort | None = None
-        self._orchestrator: object | None = None
+        self._orchestrator: AgentOrchestrator | None = None
 
     # --- LLM ---
     @property
@@ -115,7 +120,7 @@ class Container:
     def agent_registry(self) -> AgentRegistry:
         return AgentRegistry(self.llm, self.retriever)
 
-    def run_agent_use_case(self):
+    def run_agent_use_case(self) -> RunAgentUseCase:
         # Lazy: only touch LangGraph when the agent flow is actually used.
         from copilot.agents.orchestrator.orchestrator import AgentOrchestrator
         from copilot.application.use_cases.run_agent import RunAgentUseCase

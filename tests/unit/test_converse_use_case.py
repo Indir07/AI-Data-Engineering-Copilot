@@ -36,9 +36,7 @@ def test_continue_existing_conversation_appends() -> None:
     use_case, repo = _use_case()
     first = use_case.execute(ConverseRequestDTO(prompt="one"))
 
-    use_case.execute(
-        ConverseRequestDTO(prompt="two", conversation_id=first.conversation_id)
-    )
+    use_case.execute(ConverseRequestDTO(prompt="two", conversation_id=first.conversation_id))
 
     stored = repo.get(first.conversation_id)
     assert stored is not None

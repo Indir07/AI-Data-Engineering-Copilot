@@ -69,11 +69,11 @@ def test_save_is_upsert_and_replaces_messages(repo: SqlAlchemyConversationReposi
 
 @pytest.mark.integration
 def test_list_returns_newest_first(repo: SqlAlchemyConversationRepository) -> None:
-    from datetime import datetime, timedelta, timezone
+    from datetime import UTC, datetime, timedelta
 
-    older = Conversation(created_at=datetime.now(timezone.utc) - timedelta(hours=1))
+    older = Conversation(created_at=datetime.now(UTC) - timedelta(hours=1))
     older.add(Role.USER, "old")
-    newer = Conversation(created_at=datetime.now(timezone.utc))
+    newer = Conversation(created_at=datetime.now(UTC))
     newer.add(Role.USER, "new")
     repo.save(older)
     repo.save(newer)
